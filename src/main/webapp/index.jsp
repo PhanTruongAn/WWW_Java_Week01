@@ -2,19 +2,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>First HomeWork</title>
 </head>
 <body>
-<form action="home" method="post">
-    <input type="hidden" name="action" value="xxx">
-    <input type="submit" value="Submit xxx">
+<form action="Home" method="post">
+
+    <input type="hidden" name="action" value="xxx"/>
+    <input type="submit" value="Submit xxx"/>
 </form>
 
 <br/>
-<br>
-<form action="home" method="post">
+<br/>
+<form action="Home" method="post">
+
     <input type="hidden" name="action" value="yyy">
-    <input type="submit" value="Submit yyy">
+    <input type="submit" value="Submit yyy"/>
 </form>
 
 </body>

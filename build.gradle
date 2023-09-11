@@ -3,7 +3,7 @@ plugins {
     id 'war'
 }
 
-group 'com.www_lab_week1.fit'
+group 'com.TH_week1.fit'
 version '1.0-SNAPSHOT'
 
 repositories {
