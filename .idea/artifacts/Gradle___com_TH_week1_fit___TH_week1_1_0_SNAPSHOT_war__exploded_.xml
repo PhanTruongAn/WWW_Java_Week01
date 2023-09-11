@@ -18,6 +18,17 @@
           <element id="module-output" name="TH_week1.main" />
           <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.mariadb.jdbc:mariadb-java-client:3.2.0" />
+          <element id="library" level="project" name="Gradle: com.github.waffle:waffle-jna:3.2.0" />
+          <element id="library" level="project" name="Gradle: net.java.dev.jna:jna-platform:5.12.1" />
+          <element id="library" level="project" name="Gradle: net.java.dev.jna:jna:5.12.1" />
+          <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.36" />
+          <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.36" />
+          <element id="library" level="project" name="Gradle: com.github.ben-manes.caffeine:caffeine:2.9.3" />
+          <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:3.23.0" />
+          <element id="library" level="project" name="Gradle: com.google.errorprone:error_prone_annotations:2.10.0" />
+        </element>
       </element>
     </root>
   </artifact>

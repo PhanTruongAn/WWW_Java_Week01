@@ -31,7 +31,7 @@ public class ControllerServlet extends HttpServlet {
         if(action.equalsIgnoreCase("xxx")){
             out.println("You call xxx");
         }else if(action.equalsIgnoreCase("yyy")){
-            out.println("You call yyy");
+            resp.sendRedirect("form2.jsp");
         }
     }
 }
