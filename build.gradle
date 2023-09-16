@@ -24,6 +24,23 @@ tasks.withType(JavaCompile) {
 dependencies {
     compileOnly('jakarta.platform:jakarta.jakartaee-web-api:9.1.0')
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'mysql:mysql-connector-java:8.0.32'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+    compileOnly 'javax.servlet:jsp-api:2.0'
+    implementation 'jstl:jstl:1.2'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+    implementation 'org.jboss.weld.servlet:weld-servlet-core:5.1.1.Final'
+
+
+
+
+
+
+
+
+
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
