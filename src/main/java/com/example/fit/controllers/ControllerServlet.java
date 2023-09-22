@@ -16,37 +16,84 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ControllerServlet","/control"})
+@WebServlet(urlPatterns = {"/ControlServlet"})
 public class ControllerServlet extends HttpServlet {
     @Inject
-    private AccountServices services;
+    AccountServices services;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String action = request.getParameter("action");
-        String uName = request.getParameter("TxtUserName");
-        String uPassword  = request.getParameter("TxtPassWord");
-        PrintWriter out = response.getWriter();
-        GrantAccess ac = services.getAccountRole(uName, uPassword);
-//        List<GrantAccess> dsAccount = services.getDsAccountRole();
-        if (ac == null) {
-            out.println("Login False");
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("admin-home.jsp");
-            request.setAttribute("user", services.getAccountRole(uName, uPassword));
-//            request.setAttribute("dsuser", services.getDsAccountRole());
-            dispatcher.forward(request, response);
-//            String deleteBtn = request.getParameter("delete");
-//            String updateBtn = request.getParameter("update");
 
-        }
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        switch (action) {
+            case "login":
+                logIn(request, response);
+                break;
+            case "logout":
+                logOut(request, response);
+                break;
+            case "addAccount":
+                addAccount(request, response);
+                break;
+            case "submitAddAccount":
+                submitaddAccount(request, response);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uName = request.getParameter("txtUserName");
+        String uPassword = request.getParameter("txtPassWord");
+        PrintWriter out = response.getWriter();
+        GrantAccess gr = services.getAccountRole(uName, uPassword);
+        List<GrantAccess> dsAccount = services.getDsAccount();
+        if (gr.getRole_id().getRole_id().equals("admin")) {
+            Account admin = services.accountLogin(uName, uPassword);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
+            request.setAttribute("dsAcc", dsAccount);
+            request.setAttribute("admin-role", gr);
+            dispatcher.forward(request, response);
+
+        } else {
+            Account ac = services.accountLogin(uName, uPassword);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("userLogin.jsp");
+            request.setAttribute("userLogin", ac);
+            dispatcher.forward(request, response);
+        }
+    }
+
+    public void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uName = request.getParameter("userID");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    public void addAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("addAccount.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    public void submitaddAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String user = request.getParameter("username");
+        String fullName = request.getParameter("fullName");
+        String pass = request.getParameter("password");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        Account ac = new Account(user, fullName, pass, email, phone, 1);
+        boolean rs = services.addAccount(ac);
+        request.getRequestDispatcher("dashboard.jsp").forward(request, response);
 
     }
 }
+

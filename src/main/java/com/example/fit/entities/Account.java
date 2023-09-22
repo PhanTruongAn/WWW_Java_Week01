@@ -8,6 +8,7 @@ public class Account {
     private String phone;
     private int status;
 
+
     public Account(String account_id, String full_name, String password, String email, String phone, int status) {
         this.account_id = account_id;
         this.full_name = full_name;
@@ -65,6 +66,7 @@ public class Account {
     public int getStatus() {
         return status;
     }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -79,4 +81,5 @@ public class Account {
 
     public Account() {
     }
+
 }

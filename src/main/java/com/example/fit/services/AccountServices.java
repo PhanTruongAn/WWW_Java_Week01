@@ -6,12 +6,15 @@ import com.example.fit.repositories.AccountRepositories;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import java.util.List;
-import jakarta.ws.rs.PathParam;
 
 @RequestScoped
 public class AccountServices {
     @Inject
     private AccountRepositories repository;
+    public AccountServices(){
+        repository = new AccountRepositories();
+    }
+
     public List<Account> getAll(){
         return repository.getAll();
     }
@@ -21,7 +24,16 @@ public class AccountServices {
     public GrantAccess getAccountRole(String username, String password) {
         return repository.getAccountRole(username, password);
     }
-    public List<GrantAccess> getDsAccountRole() {
-        return repository.getDsAccountRole();
+    public List<GrantAccess> getDsAccount() {
+        return repository.getDsAccount();
+    }
+    public Account accountLogin(String name, String pass){
+        return repository.accountLogin(name,pass);
+    }
+    public boolean accountLogout(String userName) {
+        return true;
+    }
+    public boolean addAccount(Account acc){
+        return true;
     }
 }

@@ -25,6 +25,8 @@
   </td>
   <td><%=gr.getRole_id().getRole_name()%>
   </td>
+  <td><%=gr.getAccount_id().getStatus()%>
+  </td>
 </head>
 <body>
 
