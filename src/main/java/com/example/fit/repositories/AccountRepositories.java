@@ -1,8 +1,6 @@
 package com.example.fit.repositories;
 
-import com.example.fit.entities.Account;
-import com.example.fit.entities.GrantAccess;
-import com.example.fit.entities.Role;
+import com.example.fit.entities.*;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
@@ -17,7 +15,6 @@ import java.util.List;
 @RequestScoped
 public class AccountRepositories {
     private Connection connection;
-
     public AccountRepositories() {
 
         connection = DatabaseRepository.getConnection();
@@ -30,7 +27,23 @@ public class AccountRepositories {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                Account account = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6));
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                Account account = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status);
                 list.add(account);
             }
         } catch (SQLException e) {
@@ -49,7 +62,23 @@ public class AccountRepositories {
             statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                ac = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6));
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                ac = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -66,7 +95,39 @@ public class AccountRepositories {
             statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                grantAccess = new GrantAccess(new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6)), new Role(rs.getString(7), rs.getString(8)), rs.getInt(9));
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                String isGrantValue = rs.getString(9);
+                IsGrant isGrant = null;
+                switch (isGrantValue) {
+                    case "1":
+                        isGrant = IsGrant.Enable;
+                        break;
+                    case "0":
+                        isGrant = IsGrant.Disable;
+                        break;
+                    case "-1":
+                        isGrant = IsGrant.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                grantAccess = new GrantAccess(new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status), new Role(rs.getString(7), rs.getString(8)), isGrant);
 
             }
         } catch (SQLException e) {
@@ -85,7 +146,39 @@ public class AccountRepositories {
                     "where grant_access.role_id !='" + s + "'");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                GrantAccess grantAccess = new GrantAccess(new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6)), new Role(rs.getString(7), rs.getString(8)), rs.getInt(9));
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                String isGrantValue = rs.getString(9);
+                IsGrant isGrant = null;
+                switch (isGrantValue) {
+                    case "1":
+                        isGrant = IsGrant.Enable;
+                        break;
+                    case "0":
+                        isGrant = IsGrant.Disable;
+                        break;
+                    case "-1":
+                        isGrant = IsGrant.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                GrantAccess grantAccess = new GrantAccess(new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status), new Role(rs.getString(7), rs.getString(8)),isGrant);
                 dsAccount.add(grantAccess);
             }
         } catch (SQLException e) {
@@ -105,12 +198,28 @@ public class AccountRepositories {
             ResultSet rs = selectStatement.executeQuery();
 
             if (rs.next()) {
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
                 String updateQuery = "UPDATE mydb.account SET status = 1 WHERE account_id = ? AND password = ?";
                 PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
                 updateStatement.setString(1, name);
                 updateStatement.setString(2, pass);
                 updateStatement.executeUpdate();
-                ac = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), 1);
+                ac = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status);
             }
 
         } catch (SQLException e) {
@@ -138,13 +247,21 @@ public class AccountRepositories {
     public boolean addAccount(Account acc) {
         PreparedStatement statement = null;
         try {
+            int status = 0;
+            if (acc.getStatus() == Status.Active) {
+                status=1;
+            } else if (acc.getStatus() == Status.Inactive) {
+                status= 0;
+            } else if (acc.getStatus()  == Status.Delete) {
+                status= -1;
+            }
             statement = connection.prepareStatement("INSERT INTO mydb.account VALUES(?,?,?,?,?,?)");
             statement.setString(1, acc.getAccount_id());
             statement.setString(2, acc.getFull_name());
             statement.setString(3, acc.getPassword());
             statement.setString(4, acc.getEmail());
             statement.setString(5, acc.getPhone());
-            statement.setInt(6, acc.getStatus());
+            statement.setInt(6, status);
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -161,9 +278,8 @@ public class AccountRepositories {
 
     public boolean delAccountById(String id) {
         PreparedStatement statement = null;
-
         try {
-            statement = connection.prepareStatement("DELETE from mydb.account where account_id=?");
+            statement = connection.prepareStatement("UPDATE mydb.account set status=-1 where account_id=?");
             statement.setString(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -181,12 +297,20 @@ public class AccountRepositories {
         PreparedStatement statement = null;
 
         try {
+            int status = 0;
+            if (account.getStatus() == Status.Active) {
+                status=1;
+            } else if (account.getStatus() == Status.Inactive) {
+                status= 0;
+            } else if (account.getStatus()  == Status.Delete) {
+                status= -1;
+            }
             statement = connection.prepareStatement("update mydb.account set full_name=?,password=?,email=?,phone=?,status=? where account_id=?");
             statement.setString(1, account.getFull_name());
             statement.setString(2, account.getPassword());
             statement.setString(3, account.getEmail());
             statement.setString(4, account.getPhone());
-            statement.setInt(5, account.getStatus());
+            statement.setInt(5, status);
             statement.setString(6, account.getAccount_id());
             statement.executeUpdate();
         } catch (SQLException e) {

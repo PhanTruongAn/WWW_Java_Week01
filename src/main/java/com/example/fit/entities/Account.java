@@ -6,10 +6,10 @@ public class Account {
     private String password;
     private String email;
     private String phone;
-    private int status;
+    private Status status;
 
 
-    public Account(String account_id, String full_name, String password, String email, String phone, int status) {
+    public Account(String account_id, String full_name, String password, String email, String phone, Status status) {
         this.account_id = account_id;
         this.full_name = full_name;
         this.password = password;
@@ -43,7 +43,7 @@ public class Account {
         this.phone = phone;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -63,7 +63,7 @@ public class Account {
         return phone;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 

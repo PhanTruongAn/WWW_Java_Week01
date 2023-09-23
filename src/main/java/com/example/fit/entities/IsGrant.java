@@ -1,9 +1,9 @@
 package com.example.fit.entities;
 
 public enum IsGrant {
-        ENABLE(1),
-        DISABLE(0),
-        DELETE (-1);
+        Enable(1),
+        Disable(0),
+        Delete(-1);
 
 
         private final int value;

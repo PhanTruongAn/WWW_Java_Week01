@@ -1,23 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="common/lib.jsp" %>
+<%--<%@ include file="addAccount.jsp"%>--%>
 <%@ page import="com.example.fit.entities.Account" %>
 <%@ page import="com.example.fit.entities.GrantAccess" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="com.example.fit.entities.Status" %>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="css/dashboard.css" rel='stylesheet' type='text/css'>
+<%--<link href="css/dashboard.css" rel='stylesheet' type='text/css'>--%>
 <html>
 <head>
     <%
-        GrantAccess gr = (GrantAccess) request.getAttribute("admin-role");
-
+        GrantAccess gr = (GrantAccess) session.getAttribute("admin-role");
     %>
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: green;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #e74c3c;
+        }
+    </style>
     <div class="container">
         <div class="row">
             <div class="col-12 mt-4">
                 <h3 class="center-text" style="text-align: center">Xin chào <%=gr.getAccount_id().getFull_name()%>
                 </h3>
-                <!-- Các dòng HTML khác ở đây -->
             </div>
         </div>
     </div>
@@ -33,40 +51,42 @@
                     <th scope="col">FullName</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Role</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody style="background: #f4f4f4">
-                <% List<GrantAccess> list = (List<GrantAccess>) request.getAttribute("dsAcc");%>
+                <% List<Account> list = (List<Account>) session.getAttribute("dsAcc");
+                %>
                 <%
-                    for (int i = 0; i < list.size(); i++) {
-                        GrantAccess dsAccount = list.get(i);
+
+                    for (Account dsAccount: list) {
 
                 %>
                 <tr>
-                    <td><%=dsAccount.getAccount_id().getAccount_id()%>
+                    <td><%=dsAccount.getAccount_id()%>
                     </td>
-                    <td><%=dsAccount.getAccount_id().getFull_name()%>
+                    <td><%=dsAccount.getFull_name()%>
                     </td>
-                    <td><%=dsAccount.getAccount_id().getEmail()%>
+                    <td><%=dsAccount.getEmail()%>
                     </td>
-                    <td><%=dsAccount.getAccount_id().getPhone()%>
+                    <td><%=dsAccount.getPhone()%>
                     </td>
                     <td>
-
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected><%=dsAccount.getRole_id().getRole_name()%>
-                            </option>
-                            <option value="1">Customer</option>
-                            <option value="2">User</option>
-                        </select>
-                    </td>
-                    <td><%=(dsAccount.getAccount_id().getStatus() == 1) ? "active" :
-                            (dsAccount.getAccount_id().getStatus() == 0) ? "deactive" :
-                                    (dsAccount.getAccount_id().getStatus() == -1) ? "xóa" : "null"
-                    %>
+                        <%
+                            Status status = dsAccount.getStatus();
+                            String statusText = null;
+                            if (status == Status.Active) {
+                                statusText = "Active";
+                            } else if (status == Status.Inactive) {
+                                statusText = "Inactive";
+                            } else if (status == Status.Delete) {
+                                statusText = "Delete";
+                            } else {
+                                statusText = "null";
+                            }
+                        %>
+                        <%=statusText%>
                     </td>
                     <td>
                         <button class="btn btn-primary bi bi-trash"
@@ -87,19 +107,15 @@
             </table>
         </div>
     </div>
-    <form action="ControlServlet?action=logout" method="post">
-        <!-- ... -->
-        <button class="logout-button">Đăng Xuất</button>
+    <form action="logout" method="post">
+        <button class="logout-button" name="logout-button">Đăng Xuất</button>
     </form>
-    <form action="ControlServlet?action=addAccount" method="post">
+    <form action="formAdd" method="post">
         <button class="btn btn-success">Thêm Account</button>
     </form>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
 </body>
 </html>

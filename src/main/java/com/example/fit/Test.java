@@ -3,10 +3,11 @@ package com.example.fit;
 import com.example.fit.db.DBConnection;
 import com.example.fit.entities.Account;
 import com.example.fit.entities.GrantAccess;
+import com.example.fit.entities.Status;
 import com.example.fit.repositories.AccountRepositories;
 import com.example.fit.repositories.DatabaseRepository;
 import com.example.fit.repositories.LogRepositories;
-import com.example.fit.services.AccountServices;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,11 +34,7 @@ public class Test {
 //        System.err.println(acc);
         //GrandAccess
 
-//        GrantAccess gr = data.getAccountRole("met","123");
-//        System.err.println(gr);
         AccountRepositories acc = new AccountRepositories();
-        Account ac = new Account("an","Phan Truong An","123","phanan45@gmail.com","021478563",1);
-        boolean rs = acc.addAccount(ac);
-        System.err.println(rs);
+
     }
 }

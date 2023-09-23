@@ -3,17 +3,17 @@ package com.example.fit.entities;
 public class GrantAccess {
     private Account account_id;
     private Role role_id;
-    private int isGrant;
+    private IsGrant isGrant;
     private String note;
 
-    public GrantAccess(Account account_id, Role role_id, int isGrant, String note) {
+    public GrantAccess(Account account_id, Role role_id, IsGrant isGrant, String note) {
         this.account_id = account_id;
         this.role_id = role_id;
         this.isGrant = isGrant;
         this.note = note;
     }
 
-    public GrantAccess(Account account, Role role, int isGrant) {
+    public GrantAccess(Account account, Role role, IsGrant isGrant) {
         this.account_id = account;
         this.role_id = role;
         this.isGrant = isGrant;
@@ -34,7 +34,7 @@ public class GrantAccess {
         this.role_id = role_id;
     }
 
-    public void setIsGrant(int isGrant) {
+    public void setIsGrant(IsGrant isGrant) {
         this.isGrant = isGrant;
     }
 
@@ -46,7 +46,7 @@ public class GrantAccess {
         return role_id;
     }
 
-    public int getIsGrant() {
+    public IsGrant getIsGrant() {
         return isGrant;
     }
 
