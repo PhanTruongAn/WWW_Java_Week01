@@ -33,8 +33,5 @@ public class Test {
 //        String acc = data.findAccByUserPass("an123","123");
 //        System.err.println(acc);
         //GrandAccess
-
-        AccountRepositories acc = new AccountRepositories();
-
     }
 }

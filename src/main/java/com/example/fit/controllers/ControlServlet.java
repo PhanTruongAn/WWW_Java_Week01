@@ -38,6 +38,9 @@ private final AccountRepositories services = new AccountRepositories();
             case "/addAccount":
                 addAccount(request, response);
                 break;
+            case "/delete":
+                deleteAccount(request,response);
+                break;
             case "/cancel":
                cancelAdd(request,response);
                 break;
@@ -92,13 +95,27 @@ private final AccountRepositories services = new AccountRepositories();
             session.setAttribute("dsAcc", updateList);
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Insert Success!');");
-            out.println("location='dashboard.jsp';");
+            out.println("location='listAccount.jsp';");
             out.println("</script>");
 
         }
     }
+    public void deleteAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("idAccount");
+        boolean rs = services.delAccountById(id);
+        PrintWriter out = response.getWriter();
+        if (rs) {
+            List<Account> updateList = services.getAll();
+            HttpSession session = request.getSession(true);
+            session.setAttribute("dsAcc", updateList);
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Delete Success!');");
+            out.println("location='listAccount.jsp';");
+            out.println("</script>");
+        }
+    };
     public void cancelAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("listAccount.jsp");
             dispatcher.forward(request,response);
     }
 

@@ -1,25 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="common/lib.jsp" %>
-<%--<%@ include file="addAccount.jsp"%>--%>
-<%@ page import="com.example.fit.entities.Account" %>
-<%@ page import="com.example.fit.entities.GrantAccess" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="com.example.fit.entities.Status" %>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<%--<link href="css/dashboard.css" rel='stylesheet' type='text/css'>--%>
+<!DOCTYPE html>
 <html>
 <head>
-    <%
-        GrantAccess gr = (GrantAccess) session.getAttribute("admin-role");
-    %>
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ page import="com.example.fit.entities.Account" %>
+    <%@ page import="com.example.fit.entities.GrantAccess" %>
+    <%@ page import="java.util.List" %>
+    <%@ page import="com.example.fit.entities.Status" %>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .logout-button {
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: green;
+            background-color: #e74c3c;
             color: #fff;
             padding: 5px 10px;
             border: none;
@@ -28,94 +22,88 @@
         }
 
         .logout-button:hover {
-            background-color: #e74c3c;
+            background-color: red;
+        }
+        .corner-links {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .corner-link{
+            text-align: center;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: green;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .corner-link:hover {
+            background-color: #13d1f7;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .user-info-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .user-info-label {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .user-info-value {
+            color: #555;
+            font-size: 18px;
         }
     </style>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 mt-4">
-                <h3 class="center-text" style="text-align: center">Xin chào <%=gr.getAccount_id().getFull_name()%>
-                </h3>
-            </div>
-        </div>
-    </div>
 </head>
+<%
+    GrantAccess gr = (GrantAccess) session.getAttribute("admin-role");
+%>
 <body style="background: cadetblue">
 <div class="container">
-    <div class="row">
-        <div class="col-12 mt-4">
-            <table class="table">
-                <thead class="table-light">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">FullName</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody style="background: #f4f4f4">
-                <% List<Account> list = (List<Account>) session.getAttribute("dsAcc");
-                %>
-                <%
-
-                    for (Account dsAccount: list) {
-
-                %>
-                <tr>
-                    <td><%=dsAccount.getAccount_id()%>
-                    </td>
-                    <td><%=dsAccount.getFull_name()%>
-                    </td>
-                    <td><%=dsAccount.getEmail()%>
-                    </td>
-                    <td><%=dsAccount.getPhone()%>
-                    </td>
-                    <td>
-                        <%
-                            Status status = dsAccount.getStatus();
-                            String statusText = null;
-                            if (status == Status.Active) {
-                                statusText = "Active";
-                            } else if (status == Status.Inactive) {
-                                statusText = "Inactive";
-                            } else if (status == Status.Delete) {
-                                statusText = "Delete";
-                            } else {
-                                statusText = "null";
-                            }
-                        %>
-                        <%=statusText%>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary bi bi-trash"
-                                onclick=""
-                                name="delete">Delete
-                        </button>
-                        <button class="btn btn-warning bi bi-pencil-square"
-                        <%--                                onclick="updateClick(<%grantAccess.getAccount_id().getEmail();%>)"--%>
-                                name="update">
-                            Update
-                        </button>
-                    </td>
-                </tr>
-                <%
-                    }
-                %>
-                </tbody>
-            </table>
-        </div>
+    <div class="corner-links">
+        <a style="text-decoration: none" class="corner-link" href="listAccount.jsp">Danh sách account</a>
+        <a style="text-decoration: none" class="corner-link" href="#">Accounts role</a>
+        <a style="text-decoration: none" class="corner-link" href="#">Cấp quyền</a>
+        <a style="text-decoration: none" class="corner-link" href="#">Kiểm tra đăng nhập</a>
     </div>
-    <form action="logout" method="post">
-        <button class="logout-button" name="logout-button">Đăng Xuất</button>
-    </form>
-    <form action="formAdd" method="post">
-        <button class="btn btn-success">Thêm Account</button>
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-            crossorigin="anonymous"></script>
+    <h1 class="page-title">Xin chào Admin <%=gr.getAccount_id().getFull_name()%></h1>
+        <form action="logout" method="post">
+            <button class="logout-button" name="logout-button">Đăng xuất</button>
+        </form>
+
+    <div class="user-info-container">
+        <div class="user-info-label">Full Name:</div>
+        <div class="user-info-value"><%=gr.getAccount_id().getFull_name()%></div>
+
+        <div class="user-info-label">Email:</div>
+        <div class="user-info-value"><%=gr.getAccount_id().getEmail()%></div>
+
+        <div class="user-info-label">Phone:</div>
+        <div class="user-info-value"><%=gr.getAccount_id().getPhone()%></div>
+
+        <div class="user-info-label">Role:</div>
+        <div class="user-info-value"><%=gr.getRole_id().getRole_name()%></div>
+
+    </div>
 </div>
 </body>
 </html>
