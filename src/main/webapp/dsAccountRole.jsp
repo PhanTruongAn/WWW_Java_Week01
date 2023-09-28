@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.fit.entities.Account" %>
 <%@ page import="com.example.fit.entities.GrantAccess" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.fit.entities.Status" %>
+<%@ page import="com.example.fit.entities.IsGrant" %>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <html>
@@ -38,50 +37,52 @@
                     <th scope="col">ID</th>
                     <th scope="col">FullName</th>
                     <th scope="col">Email</th>
+                    <th scope="col">RoleName</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">IsGrant</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody style="background: #f4f4f4">
-                <% List<Account> list = (List<Account>) session.getAttribute("dsAcc");
+                <%
+                    List<GrantAccess> list = (List<GrantAccess>) session.getAttribute("dsRole");
                 %>
                 <%
 
-                    for (Account dsAccount: list) {
+                    for (GrantAccess dsAccount: list) {
 
                 %>
                 <tr>
-                    <td><%=dsAccount.getAccount_id()%>
+                    <td><%=dsAccount.getAccount_id().getAccount_id()%>
                     </td>
-                    <td><%=dsAccount.getFull_name()%>
+                    <td><%=dsAccount.getAccount_id().getFull_name()%>
                     </td>
-                    <td><%=dsAccount.getEmail()%>
+                    <td><%=dsAccount.getAccount_id().getEmail()%>
                     </td>
-                    <td><%=dsAccount.getPhone()%>
+                    <td><%=dsAccount.getRole_id().getRole_name()%>
+                    </td>
+                    <td><%=dsAccount.getAccount_id().getPhone()%>
                     </td>
                     <td>
                         <%
-                            Status status = dsAccount.getStatus();
-                            String statusText = null;
-                            if (status == Status.Active) {
-                                statusText = "Active";
-                            } else if (status == Status.Inactive) {
-                                statusText = "Inactive";
-                            } else if (status == Status.Delete) {
-                                statusText = "Delete";
+                            IsGrant isgrant = dsAccount.getIsGrant();
+                            String isgrantText = null;
+                            if (isgrant == IsGrant.Enable) {
+                                isgrantText = "Enable";
+                            } else if (isgrant == IsGrant.Disable) {
+                                isgrantText = "Disable";
                             } else {
-                                statusText = "null";
+                                isgrantText = "null";
                             }
                         %>
-                        <%=statusText%>
+                        <%=isgrantText%>
                     </td>
                     <td>
                         <button class="btn btn-primary bi bi-trash"
-                                name="delete"><a style="text-decoration: none" href="delete?idAccount=<%=dsAccount.getAccount_id()%>">Delete</a>
+                                name="delete"><a style="text-decoration: none" href="">Xóa quyền</a>
                         </button>
                         <button class="btn btn-warning bi bi-pencil-square"
-                                name="update"><a style="text-decoration: none" href="loadInfIntoUpdateForm?accountID=<%=dsAccount.getAccount_id()%>">Update</a></button>
+                                name="update"><a style="text-decoration: none" href="">Cấp quyền</a></button>
                     </td>
                 </tr>
                 <%
@@ -91,9 +92,6 @@
             </table>
         </div>
     </div>
-    <form action="formAdd" method="post">
-        <button class="btn btn-success" >Thêm account</button>
-    </form>
     <button class="btn btn-success"><a style="text-decoration: none" class="corner-link" href="dashboard.jsp">Quay lại menu</a></button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"

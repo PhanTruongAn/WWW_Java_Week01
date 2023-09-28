@@ -2,8 +2,7 @@ package com.example.fit.entities;
 
 public enum IsGrant {
         Enable(1),
-        Disable(0),
-        Delete(-1);
+        Disable(0);
 
 
         private final int value;

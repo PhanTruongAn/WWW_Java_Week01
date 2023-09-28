@@ -6,9 +6,12 @@
 <link href="css/addAccount.css" rel='stylesheet' type='text/css'>
 <html>
 <head>
-    <title>Thêm Account</title>
+    <title>Update Account</title>
 </head>
 <body>
+<%
+    GrantAccess gr = (GrantAccess) session.getAttribute("admin-role");
+%>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -69,28 +72,31 @@
     }
 </style>
 <header>
-    <h1>Thêm Account</h1>
+    <h1>Update Account</h1>
 </header>
 <div class="container">
-    <form action="addAccount" method="post">
+    <%
+       Account account = (Account) request.getAttribute("loadInformation");
+    %>
+    <form action="update" method="post">
         <label>Họ và Tên:</label>
-        <input type="text" name="fullName" class="text" required>
+        <input type="text" name="fullName" class="text" required value="<%=account.getFull_name()%>">
 
         <label>Số điện thoại:</label>
-        <input type="text" name="phone" class="text" required>
+        <input type="text" name="phone" class="text" required value="<%=account.getPhone()%>" >
 
         <label>Tên đăng nhập:</label>
-        <input type="text" name="username" class="text" required>
+        <input type="text" name="username" class="text" required value="<%=account.getAccount_id()%>">
 
         <label>Mật khẩu:</label>
-        <input type="password" name="password" class="text" required>
+        <input type="password" name="password" class="text" required value="<%=account.getPassword()%>">
 
         <label>Email:</label>
-        <input type="text" name="email" class="text" required>
-        <button type="submit" name="submit" value="submit">Thêm</button>
+        <input type="text" name="email" class="text" required value="<%=account.getEmail()%>">
+        <button type="submit" name="submit" value="submit">Update</button>
     </form>
     <form action="cancel" method="get">
-        <button class="cancel" name="cancel">Hủy</button>
+        <button class="cancel" name="cancel">Cancel</button>
     </form>
 </div>
 </body>

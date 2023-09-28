@@ -41,6 +41,15 @@ private final AccountRepositories services = new AccountRepositories();
             case "/delete":
                 deleteAccount(request,response);
                 break;
+            case "/loadInfIntoUpdateForm":
+                loadInfIntoUpdateForm(request,response);
+                break;
+            case "/update":
+                updateAccount(request,response);
+                break;
+//            case "/dsAccountRole":
+//                dsAccountRole(request,response);
+//                break;
             case "/cancel":
                cancelAdd(request,response);
                 break;
@@ -56,11 +65,13 @@ private final AccountRepositories services = new AccountRepositories();
         String uPassword = request.getParameter("txtPassWord");
         GrantAccess gr = services.getAccountRole(uName, uPassword);
         List<Account> dsAccount = services.getAll();
+        List<GrantAccess> dsRole = services.getDsAccount();
         String logout = request.getParameter("logout-button");
         if (gr.getRole_id().getRole_id().equals("admin")) {
             acc = services.accountLogin(uName, uPassword);
             session.setAttribute("dsAcc", dsAccount);
             session.setAttribute("admin-role", gr);
+            session.setAttribute("dsRole", dsRole);
             RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -72,8 +83,12 @@ private final AccountRepositories services = new AccountRepositories();
     }
 
     private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-        dispatcher.forward(request, response);
+        String id = request.getParameter("userID");
+        boolean rs = services.accountLogout(id);
+        if(rs) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void formAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -86,7 +101,7 @@ private final AccountRepositories services = new AccountRepositories();
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        Account ac = new Account(uname,fullName,phone,email,pass,Status.Active);
+        Account ac = new Account(uname,fullName,pass,email,phone,Status.Active);
         boolean rs = services.addAccount(ac);
         PrintWriter out = response.getWriter();
         if (rs) {
@@ -95,6 +110,26 @@ private final AccountRepositories services = new AccountRepositories();
             session.setAttribute("dsAcc", updateList);
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Insert Success!');");
+            out.println("location='listAccount.jsp';");
+            out.println("</script>");
+
+        }
+    }
+    public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uname = request.getParameter("username");
+        String pass = request.getParameter("password");
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        Account ac = new Account(uname,fullName,pass,email,phone,Status.Active);
+        boolean rs = services.updateAccount(ac);
+        PrintWriter out = response.getWriter();
+        if (rs) {
+            List<Account> updateList = services.getAll();
+            HttpSession session = request.getSession(true);
+            session.setAttribute("dsAcc", updateList);
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Update Success!');");
             out.println("location='listAccount.jsp';");
             out.println("</script>");
 
@@ -114,6 +149,17 @@ private final AccountRepositories services = new AccountRepositories();
             out.println("</script>");
         }
     };
+    public void loadInfIntoUpdateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            String accountId = request.getParameter("accountID");
+            Account account = services.findAccountById(accountId);
+            request.setAttribute("loadInformation",account);
+            request.getRequestDispatcher("updateAccount.jsp").forward(request,response);
+    }
+//    public void dsAccountRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//            HttpSession session = request.getSession(true);
+//            List<GrantAccess> dsAccount = services.getDsAccount();
+//            session.setAttribute("dsRole",dsAccount);
+//    }
     public void cancelAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("listAccount.jsp");
             dispatcher.forward(request,response);

@@ -23,7 +23,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: cadetblue;
             margin: 0;
             padding: 0;
             display: flex;
@@ -85,7 +85,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #3498db;
+            background-color: darkred;
             color: #fff;
             padding: 5px 10px;
             border: none;
@@ -94,9 +94,12 @@
         }
 
         .logout-button:hover {
-            background-color: #2980b9;
+            background-color: #e74c3c;
         }
-
+        a{
+            color: #f4f4f4;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -105,7 +108,7 @@
     </h1>
     <div class="info">
         <label>ID:</label>
-        <p name="userID"><%=ac.getAccount_id()%>
+        <p><%=ac.getAccount_id()%>
         </p>
     </div>
     <div class="info">
@@ -127,9 +130,7 @@
         <label for="status">Status:</label>
         <p id="status" class="status status-active">Active</p>
     </div>
-    <form action="logout" method="post">
-        <button class="logout-button">Đăng Xuất</button>
-    </form>
+        <button class="logout-button"><a style="text-decoration: none" href="logout?userID=<%=ac.getAccount_id()%>">Đăng xuất</a></button>
 </div>
 </body>
 

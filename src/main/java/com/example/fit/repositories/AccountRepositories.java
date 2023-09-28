@@ -120,9 +120,6 @@ public class AccountRepositories {
                     case "0":
                         isGrant = IsGrant.Disable;
                         break;
-                    case "-1":
-                        isGrant = IsGrant.Delete;
-                        break;
                     default:
 
                         break;
@@ -170,9 +167,6 @@ public class AccountRepositories {
                         break;
                     case "0":
                         isGrant = IsGrant.Disable;
-                        break;
-                    case "-1":
-                        isGrant = IsGrant.Delete;
                         break;
                     default:
 
@@ -292,6 +286,39 @@ public class AccountRepositories {
         }
         return true;
     }
+    public Account findAccountById(String id) {
+        Account acc = new Account();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM mydb.account WHERE account_id = ?");
+            statement.setString(1,id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String statusValue = rs.getString(6);
+                Status status = null;
+                switch (statusValue) {
+                    case "1":
+                        status = Status.Active;
+                        break;
+                    case "0":
+                        status = Status.Inactive;
+                        break;
+                    case "-1":
+                        status = Status.Delete;
+                        break;
+                    default:
+
+                        break;
+                }
+                acc = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return acc;
+    }
+
+
 
     public boolean updateAccount(Account account) {
         PreparedStatement statement = null;

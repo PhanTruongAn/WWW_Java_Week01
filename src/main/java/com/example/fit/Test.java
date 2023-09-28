@@ -17,11 +17,12 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
-//DatabaseRepository data = new DatabaseRepository();
-
+AccountRepositories data = new AccountRepositories();
+//Account acc = data.findAccountById("teo");
+//System.err.println(acc);
         //GetAll
-//        List<Account> list = data.getAll();
-//        list.forEach(x->System.err.println(x));
+        List<GrantAccess> list = data.getDsAccount();
+        list.forEach(x->System.err.println(x));
         //Add
 //        Account acc = new Account("an123","Phan Truong An","123","phanan45@gmail.com","021478563",1);
 //        data.addAccount(acc);
