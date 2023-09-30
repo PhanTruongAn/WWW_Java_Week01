@@ -86,8 +86,7 @@
     <div class="corner-links">
         <a style="text-decoration: none" class="corner-link" href="listAccount.jsp">Danh sách account</a>
         <a style="text-decoration: none" class="corner-link" href="dsAccountRole.jsp">Accounts role</a>
-        <a style="text-decoration: none" class="corner-link" href="#">Cấp quyền</a>
-        <a style="text-decoration: none" class="corner-link" href="#">Kiểm tra đăng nhập</a>
+        <a style="text-decoration: none" class="corner-link" href="listAccoutLogTime.jsp">Kiểm tra đăng nhập</a>
     </div>
     <h1 class="page-title">Xin chào Admin <%=gr.getAccount_id().getFull_name()%></h1>
             <button class="logout-button" name="logout-button"><a style="text-decoration: none" href="logout?userID=<%=gr.getAccount_id().getAccount_id()%>">Đăng xuất</a></button>

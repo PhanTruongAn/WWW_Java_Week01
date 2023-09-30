@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,8 +216,16 @@ public class AccountRepositories {
                 updateStatement.setString(2, pass);
                 updateStatement.executeUpdate();
                 ac = new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), status);
+                /////////
+                LocalDateTime localDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String timeLogin = localDateTime.format(formatter);
+                String insertLogTime = "INSERT INTO mydb.log(account_log,time_log) values(?,?)";
+                PreparedStatement statementLog = connection.prepareStatement(insertLogTime);
+                statementLog.setString(1,name);
+                statementLog.setString(2,timeLogin);
+                statementLog.executeUpdate();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -229,6 +239,17 @@ public class AccountRepositories {
             PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
             updateStatement.setString(1, userName);
             updateStatement.executeUpdate();
+
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String timeLogout = localDateTime.format(formatter);
+            String insertLogTime = "UPDATE mydb.log\n" +
+                    "SET time_out = ?\n" +
+                    "WHERE account_log = ? AND time_out IS NULL ";
+            PreparedStatement statementLog = connection.prepareStatement(insertLogTime);
+            statementLog.setString(1,timeLogout);
+            statementLog.setString(2,userName);
+            statementLog.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

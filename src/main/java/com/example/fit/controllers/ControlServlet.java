@@ -2,8 +2,10 @@ package com.example.fit.controllers;
 
 import com.example.fit.entities.Account;
 import com.example.fit.entities.GrantAccess;
+import com.example.fit.entities.Log;
 import com.example.fit.entities.Status;
 import com.example.fit.repositories.AccountRepositories;
+import com.example.fit.repositories.LogRepositories;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -22,6 +24,7 @@ public class ControlServlet extends HttpServlet {
 //    @Inject
 //    AccountServices services;
 private final AccountRepositories services = new AccountRepositories();
+private final LogRepositories servicesLog = new LogRepositories();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getServletPath();
@@ -44,12 +47,12 @@ private final AccountRepositories services = new AccountRepositories();
             case "/loadInfIntoUpdateForm":
                 loadInfIntoUpdateForm(request,response);
                 break;
+            case "/listLog":
+                listTimeLog(request,response);
+                break;
             case "/update":
                 updateAccount(request,response);
                 break;
-//            case "/dsAccountRole":
-//                dsAccountRole(request,response);
-//                break;
             case "/cancel":
                cancelAdd(request,response);
                 break;
@@ -66,8 +69,10 @@ private final AccountRepositories services = new AccountRepositories();
         GrantAccess gr = services.getAccountRole(uName, uPassword);
         List<Account> dsAccount = services.getAll();
         List<GrantAccess> dsRole = services.getDsAccount();
+        List<Log> list = servicesLog.getAllLog();
         String logout = request.getParameter("logout-button");
         if (gr.getRole_id().getRole_id().equals("admin")) {
+            session.setAttribute("dsTimeLog",list);
             acc = services.accountLogin(uName, uPassword);
             session.setAttribute("dsAcc", dsAccount);
             session.setAttribute("admin-role", gr);
@@ -90,7 +95,8 @@ private final AccountRepositories services = new AccountRepositories();
             dispatcher.forward(request, response);
         }
     }
-
+    private void listTimeLog(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
     private void formAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("addAccount.jsp").forward(request, response);
     }
@@ -155,11 +161,6 @@ private final AccountRepositories services = new AccountRepositories();
             request.setAttribute("loadInformation",account);
             request.getRequestDispatcher("updateAccount.jsp").forward(request,response);
     }
-//    public void dsAccountRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//            HttpSession session = request.getSession(true);
-//            List<GrantAccess> dsAccount = services.getDsAccount();
-//            session.setAttribute("dsRole",dsAccount);
-//    }
     public void cancelAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("listAccount.jsp");
             dispatcher.forward(request,response);

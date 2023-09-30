@@ -1,15 +1,16 @@
 package com.example.fit.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Log {
     private int id;
     private String account_log;
-    private Date time_log;
-    private Date time_out;
+    private LocalDateTime time_log;
+    private LocalDateTime time_out;
     private String notes;
 
-    public Log(int id, String account_log, Date time_log, Date time_out, String notes) {
+    public Log(int id, String account_log, LocalDateTime time_log, LocalDateTime time_out, String notes) {
         this.id = id;
         this.account_log = account_log;
         this.time_log = time_log;
@@ -29,11 +30,11 @@ public class Log {
         this.account_log = account_log;
     }
 
-    public void setTime_log(Date time_log) {
+    public void setTime_log(LocalDateTime time_log) {
         this.time_log = time_log;
     }
 
-    public void setTime_out(Date time_out) {
+    public void setTime_out(LocalDateTime time_out) {
         this.time_out = time_out;
     }
 
@@ -45,11 +46,11 @@ public class Log {
         return account_log;
     }
 
-    public Date getTime_log() {
+    public LocalDateTime getTime_log() {
         return time_log;
     }
 
-    public Date getTime_out() {
+    public LocalDateTime getTime_out() {
         return time_out;
     }
 
